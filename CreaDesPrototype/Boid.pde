@@ -11,6 +11,8 @@ class Boid {
   
   color m_color;
   
+  boolean write;
+  Boid boidWrite;
   
 
     Boid(float x, float y) {
@@ -49,15 +51,19 @@ class Boid {
     PVector ali = align(boids);      // Alignment
     PVector coh = cohesion(boids);   // Cohesion
     
+    PVector globalWay = globalWay(boids);
+    
     //PVector rand = randForce();
     
     
     // Arbitrarily weight these forces
-    sep.mult(1.5 + 0.5* coeffUniformity); //1.5
+    sep.mult(1.5 + 0.5*coeffUniformity); //1.5
     
     ali.mult(coeffActivity); // 1
     
     coh.mult(1 - coeffUniformity); // 1
+    
+    globalWay.mult(0.4* coeffUniformity * coeffActivity);
     
     //rand.mult(1 - coeffUniformity);
     
@@ -78,22 +84,18 @@ class Boid {
     applyForce(sep);
     applyForce(ali);
     applyForce(coh);
+    applyForce(globalWay);
     
-    
+    /*
+        if(coeffActivity <0.3 && random(100f) < 10) {
+          velocity = velocity.mult(2.0/3.0);
+        } 
+        */
   }
   
-  PVector randForce(){
-     PVector randRow = new PVector((2*velocity.x +random(2)-1f)/3, (2*velocity.y +random(2)-1f)/3, (2*velocity.z +random(2)-1f)/3);
-     
-     randRow.normalize();
-     
-     randRow.mult(5);
-     
-     return randRow;
-  }
-
   // Method to update position
   void update() {
+   
     
     // Update velocity
     velocity.add(acceleration);
@@ -128,8 +130,16 @@ class Boid {
     // heading2D() above is now heading() but leaving old syntax until Processing.js catches up
     
     fill(200, 100);
+   
     
-    float coeffOfColor = (1 -coeffUniformity + coeffActivity)/2;
+    float coeffOfColor = coeffActivity*(1 -coeffUniformity)/2;
+    
+    if(write == true){
+      if(boidWrite == this){
+        print("Activ: "+coeffActivity+", Unif: "+coeffUniformity+", colorCoeff: "+coeffOfColor+"\n");
+      }
+    write = false;  
+  }
     
     float intensitySwithcParam = ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72)%100)/ 100;
     int plusR = -50;
@@ -172,6 +182,18 @@ class Boid {
     if (position.y < -r) position.y = height+r;
     if (position.x > width+r) position.x = -r;
     if (position.y > height+r) position.y = -r;
+  }
+
+  PVector globalWay(ArrayList<Boid> boids){
+    
+    PVector sum = new PVector(0,0);
+    
+    for (Boid other : boids) {
+      
+      sum = sum.add(other.velocity);
+    }
+    
+    return seek(sum);
   }
 
   // Separation

@@ -99,7 +99,7 @@ void keyPressed(){
   
   if(key== '+'){
     increaseUniformity();
-  }else   if(key== '+'){
+  }else   if(key== '-'){
     decreaseUniformity();
   }
   
@@ -124,6 +124,7 @@ void keyReleased(){
 
 
 void increaseUniformity(){
+    flock.setWrite(true);
     flock.coeffUniformity += 0.1;
     
     if(flock.coeffUniformity > 1 || flock.coeffActivity < 0.3){
@@ -134,6 +135,7 @@ void increaseUniformity(){
 }
 
 void decreaseUniformity(){
+    flock.setWrite(true);
     flock.coeffUniformity -= 0.1;
     
     if(flock.coeffUniformity < 0 || flock.coeffActivity < 0.3){

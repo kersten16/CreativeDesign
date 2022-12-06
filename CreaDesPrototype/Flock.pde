@@ -5,12 +5,20 @@ class Flock {
   
   float coeffUniformity;
   float coeffActivity;
-
+  
+  
   Flock() {
     boids = new ArrayList<Boid>(); // Initialize the ArrayList
     
     coeffActivity = 0;
     coeffUniformity = 1;
+  }
+  
+  void setWrite(boolean write1){
+        for (Boid b : boids) {
+      b.write = write1;
+      b.boidWrite = boids.get(0);
+    }
   }
 
 
