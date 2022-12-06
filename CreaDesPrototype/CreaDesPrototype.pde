@@ -1,20 +1,38 @@
 String remoteKey="null";
 String mouseKey="null";
 
+Flock flock;
+int millisecLastActivity;
+
+int millisecOfActivityHalo = 4000;
+
+
 void setup() {
   size(600, 600);
-   fill(255);
+  //fill(255);
+
   //System.out.println(remoteKey);
   ellipse(150, 300, 80, 80);
   ellipse(300, 200, 80, 80);
   ellipse(300, 400, 80, 80);
   ellipse(450, 300, 80, 80);
   //noLoop();
+  
+  
+  flock = new Flock();
+  // Add an initial set of boids into the system
+  for (int i = 0; i < 150; i++) {
+    flock.addBoid(new Boid(width/2,height/2));
+  }
+  
+  millisecLastActivity = millis();
 }
 
 void draw() {
-   fill(255);
+  //fill(255);
+  background(0);
   //System.out.println(remoteKey);
+  fill(0,255,0);
   ellipse(150, 300, 80, 80);
   ellipse(300, 200, 80, 80);
   ellipse(300, 400, 80, 80);
@@ -48,6 +66,13 @@ void draw() {
     ellipse(450, 300, 80, 80);
   }
   
+  
+  
+  int millisecFromActivity = millis() - millisecLastActivity;
+  
+  flock.coeffActivity = -1 / (1 + exp((millisecOfActivityHalo - millisecFromActivity)/ (millisecOfActivityHalo*0.3)))+1;
+  
+  flock.run();
 }
 
 void mousePressed(){
@@ -71,7 +96,14 @@ void mouseReleased(){
 }
 
 void keyPressed(){
-  if (key==CODED) {
+  
+  if(key== '+'){
+    increaseUniformity();
+  }else   if(key== '+'){
+    decreaseUniformity();
+  }
+  
+  else if (key==CODED) {
     if(keyCode==LEFT){
       remoteKey="left";
       //System.out.println("in left");
@@ -88,4 +120,25 @@ void keyPressed(){
 void keyReleased(){
   remoteKey="null";
   redraw();
+}
+
+
+void increaseUniformity(){
+    flock.coeffUniformity += 0.1;
+    
+    if(flock.coeffUniformity > 1 || flock.coeffActivity < 0.3){
+      flock.coeffUniformity = 1;
+    }
+    
+    millisecLastActivity = millis();
+}
+
+void decreaseUniformity(){
+    flock.coeffUniformity -= 0.1;
+    
+    if(flock.coeffUniformity < 0 || flock.coeffActivity < 0.3){
+      flock.coeffUniformity = 0;
+    }
+    
+    millisecLastActivity = millis();
 }
