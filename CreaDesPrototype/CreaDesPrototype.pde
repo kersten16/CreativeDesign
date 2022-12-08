@@ -6,6 +6,8 @@ int millisecLastActivity;
 
 int millisecOfActivityHalo = 4000;
 
+boolean isMouseActivityToBeConsiderYet = false;
+
 
 void setup() {
   size(600, 600);
@@ -32,40 +34,72 @@ void draw() {
   //fill(255);
   background(0);
   //System.out.println(remoteKey);
-  fill(0,255,0);
+  fill(255,255,255);
   ellipse(150, 300, 80, 80);
   ellipse(300, 200, 80, 80);
   ellipse(300, 400, 80, 80);
   ellipse(450, 300, 80, 80);
   
-  if(mouseKey.equals("left")&& !remoteKey.equals("left")){
-    fill(0,255,0);
-    ellipse(150, 300, 80, 80);
-  }else if(mouseKey.equals("up") && !remoteKey.equals("up")){
-    fill(0,255,0);
-    ellipse(300, 200, 80, 80);
-  } else if(mouseKey.equals("down") && !remoteKey.equals("down")){
-    fill(0,255,0);
-    ellipse(300, 400, 80, 80);
-  }else if(mouseKey.equals("right") && ! remoteKey.equals("right")){
-    fill(0,255,0);
-    ellipse(450, 300, 80, 80);
-  }
   
   if(remoteKey.equals("left")){
-    fill(255,0,0);
+        fill(0,0,255);
     ellipse(150, 300, 80, 80);
   }else if(remoteKey.equals("up")){
-    fill(255,0,0);
+        fill(0,0,255);
     ellipse(300, 200, 80, 80);
   } else if(remoteKey.equals("down")){
-    fill(255,0,0);
+        fill(0,0,255);
     ellipse(300, 400, 80, 80);
   }else if(remoteKey.equals("right")){
-    fill(255,0,0);
+        fill(0,0,255);
     ellipse(450, 300, 80, 80);
   }
   
+  if(mouseKey.equals("left")){
+    if(!remoteKey.equals("left")){
+      fill(255,0,0);   
+    }
+    else{
+      fill(0,255,0);   
+    }
+    ellipse(150, 300, 80, 80);
+  }else if(mouseKey.equals("up")){
+    if(!remoteKey.equals("up")){
+      fill(255,0,0);   
+    }
+    else{
+      fill(0,255,0);   
+    }
+    ellipse(300, 200, 80, 80);
+  } else if(mouseKey.equals("down")){
+    if(!remoteKey.equals("down")){
+      fill(255,0,0);   
+    }
+    else{
+      fill(0,255,0);   
+    }
+    ellipse(300, 400, 80, 80);
+  }else if(mouseKey.equals("right")){
+    if(!remoteKey.equals("right")){
+      fill(255,0,0);   
+    }
+    else{
+      fill(0,255,0);   
+    }
+    ellipse(450, 300, 80, 80);
+  }
+  
+  if(isMouseActivityToBeConsiderYet && !mouseKey.equals("null") && !remoteKey.equals("null")){
+   
+    if(mouseKey.equals(remoteKey)){
+      increaseUniformity();
+    }
+    else{
+      decreaseUniformity();
+    }
+    
+    isMouseActivityToBeConsiderYet = false;
+  }
   
   
   int millisecFromActivity = millis() - millisecLastActivity;
@@ -74,6 +108,8 @@ void draw() {
   
   flock.run();
 }
+
+
 
 void mousePressed(){
  
@@ -88,22 +124,27 @@ void mousePressed(){
     }
     redraw();
   
+    isMouseActivityToBeConsiderYet = true;
 }
 
 void mouseReleased(){
   mouseKey="null";
   redraw();
+  
+  isMouseActivityToBeConsiderYet = false;
 }
 
 void keyPressed(){
   
+  /*
   if(key== '+'){
     increaseUniformity();
   }else   if(key== '-'){
     decreaseUniformity();
   }
+  */
   
-  else if (key==CODED) {
+  /*else*/ if (key==CODED) {
     if(keyCode==LEFT){
       remoteKey="left";
       //System.out.println("in left");
@@ -125,7 +166,7 @@ void keyReleased(){
 
 void increaseUniformity(){
     flock.setWrite(true);
-    flock.coeffUniformity += 0.1;
+    flock.coeffUniformity += 0.33;
     
     if(flock.coeffUniformity > 1 || flock.coeffActivity < 0.3){
       flock.coeffUniformity = 1;
@@ -136,7 +177,7 @@ void increaseUniformity(){
 
 void decreaseUniformity(){
     flock.setWrite(true);
-    flock.coeffUniformity -= 0.1;
+    flock.coeffUniformity -= 0.33;
     
     if(flock.coeffUniformity < 0 || flock.coeffActivity < 0.3){
       flock.coeffUniformity = 0;
