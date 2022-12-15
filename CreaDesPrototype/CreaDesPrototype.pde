@@ -10,14 +10,15 @@ boolean isMouseActivityToBeConsiderYet = false;
 
 
 void setup() {
-  size(600, 600);
+  size(1600, 1000);
   //fill(255);
 
   //System.out.println(remoteKey);
-  ellipse(150, 300, 80, 80);
-  ellipse(300, 200, 80, 80);
-  ellipse(300, 400, 80, 80);
-  ellipse(450, 300, 80, 80);
+  
+  rect(100, 500, 210, 300);
+  rect(650, 100, 300, 210);
+  rect(650, 750, 300, 210);
+  rect(1250, 500, 210, 300);
   //noLoop();
   
   
@@ -35,24 +36,24 @@ void draw() {
   background(0);
   //System.out.println(remoteKey);
   fill(255,255,255);
-  ellipse(150, 300, 80, 80);
-  ellipse(300, 200, 80, 80);
-  ellipse(300, 400, 80, 80);
-  ellipse(450, 300, 80, 80);
+  rect(100, 500, 210, 300);
+  rect(650, 100, 300, 210);
+  rect(650, 750, 300, 210);
+  rect(1250, 500, 210, 300);
   
   
   if(remoteKey.equals("left")){
         fill(0,0,255);
-    ellipse(150, 300, 80, 80);
+    rect(100, 500, 210, 300);
   }else if(remoteKey.equals("up")){
         fill(0,0,255);
-    ellipse(300, 200, 80, 80);
+    rect(650, 100, 300, 210);
   } else if(remoteKey.equals("down")){
         fill(0,0,255);
-    ellipse(300, 400, 80, 80);
+    rect(650, 750, 300, 210);
   }else if(remoteKey.equals("right")){
         fill(0,0,255);
-    ellipse(450, 300, 80, 80);
+    rect(1250, 500, 210, 300);
   }
   
   if(mouseKey.equals("left")){
@@ -62,7 +63,7 @@ void draw() {
     else{
       fill(0,255,0);   
     }
-    ellipse(150, 300, 80, 80);
+    rect(100, 500, 210, 300);
   }else if(mouseKey.equals("up")){
     if(!remoteKey.equals("up")){
       fill(255,0,0);   
@@ -70,7 +71,7 @@ void draw() {
     else{
       fill(0,255,0);   
     }
-    ellipse(300, 200, 80, 80);
+    rect(650, 100, 300, 210);
   } else if(mouseKey.equals("down")){
     if(!remoteKey.equals("down")){
       fill(255,0,0);   
@@ -78,7 +79,7 @@ void draw() {
     else{
       fill(0,255,0);   
     }
-    ellipse(300, 400, 80, 80);
+    rect(650, 750, 300, 210);
   }else if(mouseKey.equals("right")){
     if(!remoteKey.equals("right")){
       fill(255,0,0);   
@@ -86,7 +87,7 @@ void draw() {
     else{
       fill(0,255,0);   
     }
-    ellipse(450, 300, 80, 80);
+    rect(1250, 500, 210, 300);
   }
   
   if(isMouseActivityToBeConsiderYet && !mouseKey.equals("null") && !remoteKey.equals("null")){
