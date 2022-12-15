@@ -15,14 +15,14 @@ boolean readyForMouse = false;
 
 
 void setup() {
-  size(600, 600);
+  size(1500, 1000);
   //fill(255);
   port = new Serial(this, "COM10", 9600);
   //System.out.println(remoteKey);
-  ellipse(150, 300, 80, 80);
-  ellipse(300, 200, 80, 80);
-  ellipse(300, 400, 80, 80);
-  ellipse(450, 300, 80, 80);
+  ellipse(150, 300, 100, 100);
+  ellipse(300, 200, 200, 200);
+  ellipse(300, 400, 100, 100);
+  ellipse(450, 300, 100, 100);
   //noLoop();
   
   
@@ -41,58 +41,58 @@ void draw() {
   background(0);
   //System.out.println(remoteKey);
   fill(255,255,255);
-  ellipse(150, 300, 80, 80);
-  ellipse(300, 200, 80, 80);
-  ellipse(300, 400, 80, 80);
-  ellipse(450, 300, 80, 80);
+  ellipse(150, 300, 100, 100);
+  ellipse(300, 200, 100, 100);
+  ellipse(300, 400, 100, 100);
+  ellipse(450, 300, 100, 100);
   
   
   if(remoteKey.equals("left")){
         fill(0,0,255);
-    ellipse(150, 300, 80, 80);
+    ellipse(150, 300, 100, 100);
   }else if(remoteKey.equals("up")){
         fill(0,0,255);
-    ellipse(300, 200, 80, 80);
+    ellipse(300, 200, 100, 100);
   } else if(remoteKey.equals("down")){
         fill(0,0,255);
-    ellipse(300, 400, 80, 80);
+    ellipse(300, 400, 100, 100);
   }else if(remoteKey.equals("right")){
         fill(0,0,255);
-    ellipse(450, 300, 80, 80);
+    ellipse(450, 300, 100, 100);
   }
   
   if(data.contains("left")){
     if(!remoteKey.equals("left")){
-      fill(255,0,0);   
-    }
-    else{
       fill(0,255,0);   
     }
-    ellipse(150, 300, 80, 80);
+    else{
+      fill(255,0,0);   
+    }
+    ellipse(150, 300, 100, 100);
   }else if(data.contains("up")){
     if(!remoteKey.equals("up")){
-      fill(255,0,0);   
-    }
-    else{
       fill(0,255,0);   
     }
-    ellipse(300, 200, 80, 80);
+    else{
+      fill(255,0,0);   
+    }
+    ellipse(300, 200, 100, 100);
   } else if(data.contains("down")){
     if(!remoteKey.equals("down")){
-      fill(255,0,0);   
-    }
-    else{
       fill(0,255,0);   
     }
-    ellipse(300, 400, 80, 80);
+    else{
+      fill(255,0,0);   
+    }
+    ellipse(300, 400, 100, 100);
   }else if(data.contains("right")){
     if(!remoteKey.equals("right")){
-      fill(255,0,0);   
-    }
-    else{
       fill(0,255,0);   
     }
-    ellipse(450, 300, 80, 80);
+    else{
+      fill(255,0,0);   
+    }
+    ellipse(450, 300, 100, 100);
   }
   
   if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
@@ -187,9 +187,10 @@ void decreaseUniformity(){
     
     if(flock.coeffUniformity < 0 || flock.coeffActivity < 0.3){
       flock.coeffUniformity = 0;
-    }
+    
     
     millisecLastActivity = millis();
+}
 }
 
 void serialEvent(Serial myPort){
