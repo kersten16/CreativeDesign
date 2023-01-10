@@ -12,19 +12,21 @@ int millisecLastActivity;
 int millisecOfActivityHalo = 4000;
 
 boolean readyForMouse = false;
-
+boolean newGame=true;
+PImage img;
 
 void setup() {
   size(1500, 1000);
   //fill(255);
   port = new Serial(this, "COM10", 9600);
   //System.out.println(remoteKey);
-  ellipse(150, 300, 100, 100);
-  ellipse(300, 200, 200, 200);
-  ellipse(300, 400, 100, 100);
-  ellipse(450, 300, 100, 100);
-  //noLoop();
-  
+  //ellipse(150, 300, 100, 100);
+  //ellipse(300, 200, 200, 200);
+  //ellipse(300, 400, 100, 100);
+  //ellipse(450, 300, 100, 100);
+  ////noLoop();
+  img = loadImage("img.jpeg");
+ 
   
   flock = new Flock();
   // Add an initial set of boids into the system
@@ -37,82 +39,91 @@ void setup() {
 }
 
 void draw() {
-  //fill(255);
-  background(0);
-  //System.out.println(remoteKey);
-  fill(255,255,255);
-  ellipse(150, 300, 100, 100);
-  ellipse(300, 200, 100, 100);
-  ellipse(300, 400, 100, 100);
-  ellipse(450, 300, 100, 100);
-  
-  
-  if(remoteKey.equals("left")){
-        fill(0,0,255);
+  if(newGame){
+      image(img, 10, 10, 400, 500);
+    rect(160, 530, 105, 50, 50);
+    fill(255);
+    text("START", 183, 564); 
+    fill(153);
+    textSize(28);
+  }else{
+    //fill(255);
+    background(0);
+    //System.out.println(remoteKey);
+    fill(255,255,255);
     ellipse(150, 300, 100, 100);
-  }else if(remoteKey.equals("up")){
-        fill(0,0,255);
     ellipse(300, 200, 100, 100);
-  } else if(remoteKey.equals("down")){
-        fill(0,0,255);
     ellipse(300, 400, 100, 100);
-  }else if(remoteKey.equals("right")){
-        fill(0,0,255);
     ellipse(450, 300, 100, 100);
-  }
-  
-  if(data.contains("left")){
-    if(!remoteKey.equals("left")){
-      fill(0,255,0);   
-    }
-    else{
-      fill(255,0,0);   
-    }
-    ellipse(150, 300, 100, 100);
-  }else if(data.contains("up")){
-    if(!remoteKey.equals("up")){
-      fill(0,255,0);   
-    }
-    else{
-      fill(255,0,0);   
-    }
-    ellipse(300, 200, 100, 100);
-  } else if(data.contains("down")){
-    if(!remoteKey.equals("down")){
-      fill(0,255,0);   
-    }
-    else{
-      fill(255,0,0);   
-    }
-    ellipse(300, 400, 100, 100);
-  }else if(data.contains("right")){
-    if(!remoteKey.equals("right")){
-      fill(0,255,0);   
-    }
-    else{
-      fill(255,0,0);   
-    }
-    ellipse(450, 300, 100, 100);
-  }
-  
-  if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
-   
-    if(data.contains(remoteKey)){
-      increaseUniformity();
-    }
-    else{
-      decreaseUniformity();
+    
+    
+    if(remoteKey.equals("left")){
+          fill(0,0,255);
+      ellipse(150, 300, 100, 100);
+    }else if(remoteKey.equals("up")){
+          fill(0,0,255);
+      ellipse(300, 200, 100, 100);
+    } else if(remoteKey.equals("down")){
+          fill(0,0,255);
+      ellipse(300, 400, 100, 100);
+    }else if(remoteKey.equals("right")){
+          fill(0,0,255);
+      ellipse(450, 300, 100, 100);
     }
     
-    //readyForMouse = false;
+    if(data.contains("left")){
+      if(!remoteKey.equals("left")){
+        fill(0,255,0);   
+      }
+      else{
+        fill(255,0,0);   
+      }
+      ellipse(150, 300, 100, 100);
+    }else if(data.contains("up")){
+      if(!remoteKey.equals("up")){
+        fill(0,255,0);   
+      }
+      else{
+        fill(255,0,0);   
+      }
+      ellipse(300, 200, 100, 100);
+    } else if(data.contains("down")){
+      if(!remoteKey.equals("down")){
+        fill(0,255,0);   
+      }
+      else{
+        fill(255,0,0);   
+      }
+      ellipse(300, 400, 100, 100);
+    }else if(data.contains("right")){
+      if(!remoteKey.equals("right")){
+        fill(0,255,0);   
+      }
+      else{
+        fill(255,0,0);   
+      }
+      ellipse(450, 300, 100, 100);
+    }
+    
+    if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
+     
+      if(data.contains(remoteKey)){
+        increaseUniformity();
+      }
+      else{
+        decreaseUniformity();
+      }
+      
+      //readyForMouse = false;
+    }
+    
+    
+    int millisecFromActivity = millis() - millisecLastActivity;
+    
+    flock.coeffActivity = -1 / (1 + exp((millisecOfActivityHalo - millisecFromActivity)/ (millisecOfActivityHalo*0.3)))+1;
+    
+    flock.run();
   }
-  
-  
-  int millisecFromActivity = millis() - millisecLastActivity;
-  
-  flock.coeffActivity = -1 / (1 + exp((millisecOfActivityHalo - millisecFromActivity)/ (millisecOfActivityHalo*0.3)))+1;
-  
-  flock.run();
 }
 
 
@@ -169,6 +180,16 @@ void keyReleased(){
   redraw();
 }
 
+void mousePressed() {
+  if (mouseButton == LEFT) {
+    fill(255);
+    newGame=false;
+  } else if (mouseButton == RIGHT) {
+    fill(166);
+  } else {
+    fill(0);
+  }
+}
 
 void increaseUniformity(){
     flock.setWrite(true);
