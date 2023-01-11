@@ -28,7 +28,7 @@ class Boid {
     m_color = color(100+ (int)random(150), 100+ (int)random(150), 100+ (int)random(150));
 
     position = new PVector(x, y);
-    r = 2.0;
+    r = 4.0;
     maxspeed = 2;
     maxforce = 0.05;
   }
@@ -129,7 +129,7 @@ class Boid {
     float theta = velocity.heading2D() + radians(90);
     // heading2D() above is now heading() but leaving old syntax until Processing.js catches up
     
-    fill(200, 100);
+    //fill(200, 100);
    
     
     float coeffOfColor = coeffActivity*(1 -coeffUniformity)/2;
@@ -141,13 +141,13 @@ class Boid {
     write = false;  
   }
     
-    float intensitySwithcParam = ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72)%100)/ 100;
+    float intensitySwitchParam = ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72)%100)/ 100;
     int plusR = -50;
     int plusG = -50;
     int plusB = -50;
-    if(intensitySwithcParam <0.333){
+    if(intensitySwitchParam <0.333){
       plusR = 0;
-    }else if( intensitySwithcParam <0.666){
+    }else if( intensitySwitchParam <0.666){
       plusG = 0;
     }
     else{

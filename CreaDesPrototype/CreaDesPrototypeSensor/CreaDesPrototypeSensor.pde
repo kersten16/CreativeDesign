@@ -16,21 +16,21 @@ boolean newGame=true;
 PImage img;
 
 void setup() {
-  size(1500, 1000);
+  size(1300, 1000);
   //fill(255);
   port = new Serial(this, "COM10", 9600);
   //System.out.println(remoteKey);
-  //ellipse(150, 300, 100, 100);
-  //ellipse(300, 200, 200, 200);
-  //ellipse(300, 400, 100, 100);
-  //ellipse(450, 300, 100, 100);
+  //ellipse(100, height/2-100, 200, 200);
+  //ellipse(2*width/5+50, height+200, 200, 200);
+  //ellipse(2*width/5+50, height-200, 200, 200);
+  //ellipse(4*width/5, height/2-100, 200, 200);
   ////noLoop();
   img = loadImage("img.jpeg");
  
   
   flock = new Flock();
   // Add an initial set of boids into the system
-  for (int i = 0; i < 150; i++) {
+  for (int i = 0; i < 500; i++) {
     flock.addBoid(new Boid(width/2,height/2));
   }
   readyForMouse=true;
@@ -40,35 +40,35 @@ void setup() {
 
 void draw() {
   if(newGame){
-      image(img, 10, 10, 400, 500);
-    rect(160, 530, 105, 50, 50);
+      image(img, 250, 0, 800, 1000);
     fill(255);
-    text("START", 183, 564); 
-    fill(153);
-    textSize(28);
+    triangle(850,height-125, 850, height-25,1000,height-75);
+    fill(20,225,120);
+    text("START", 862, height-63); 
+    textSize(32);
   }else{
     //fill(255);
     background(0);
     //System.out.println(remoteKey);
     fill(255,255,255);
-    ellipse(150, 300, 100, 100);
-    ellipse(300, 200, 100, 100);
-    ellipse(300, 400, 100, 100);
-    ellipse(450, 300, 100, 100);
+    ellipse(200, height/2, 200, 200);
+    ellipse(width/2, 200, 200, 200);
+    ellipse(width/2, height-200, 200, 200);
+    ellipse(width-200, height/2, 200, 200);
     
     
     if(remoteKey.equals("left")){
           fill(0,0,255);
-      ellipse(150, 300, 100, 100);
+      ellipse(200, height/2, 200, 200);
     }else if(remoteKey.equals("up")){
           fill(0,0,255);
-      ellipse(300, 200, 100, 100);
+      ellipse(width/2, 200, 200, 200);
     } else if(remoteKey.equals("down")){
           fill(0,0,255);
-      ellipse(300, 400, 100, 100);
+      ellipse(width/2, height-200, 200, 200);
     }else if(remoteKey.equals("right")){
           fill(0,0,255);
-      ellipse(450, 300, 100, 100);
+      ellipse(width-200, height/2, 200, 200);
     }
     
     if(data.contains("left")){
@@ -78,7 +78,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(150, 300, 100, 100);
+      ellipse(200, height/2, 200, 200);
     }else if(data.contains("up")){
       if(!remoteKey.equals("up")){
         fill(0,255,0);   
@@ -86,7 +86,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(300, 200, 100, 100);
+      ellipse(width/2, 200, 200, 200);
     } else if(data.contains("down")){
       if(!remoteKey.equals("down")){
         fill(0,255,0);   
@@ -94,7 +94,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(300, 400, 100, 100);
+     ellipse(width/2, height-200, 200, 200);
     }else if(data.contains("right")){
       if(!remoteKey.equals("right")){
         fill(0,255,0);   
@@ -102,7 +102,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(450, 300, 100, 100);
+      ellipse(width-200, height/2, 200, 200);
     }
     
     if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
