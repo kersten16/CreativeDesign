@@ -28,7 +28,7 @@ class Boid {
     m_color = color(100+ (int)random(150), 100+ (int)random(150), 100+ (int)random(150));
 
     position = new PVector(x, y);
-    r = 4.0;
+    r = 8.0;//4.0;
     maxspeed = 2;
     maxforce = 0.05;
   }
@@ -155,9 +155,9 @@ class Boid {
     }
     
     m_color = color(
-      150+  (100 + coeffOfColor*(plusR+ ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72))%100) )/(1+coeffOfColor) , 
-      150+ (100 + coeffOfColor*(plusG+ ((int)((velocity.x+ acceleration.x)*72))%100) )/(1+coeffOfColor),
-      150+ (100 + coeffOfColor*(plusB+ ((int)((velocity.y+acceleration.y)*72))%100) )/(1+coeffOfColor)
+      110+  (140 + coeffOfColor*(plusR+ ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72))%100) )/(1+coeffOfColor) , 
+      110+ (140 + coeffOfColor*(plusG+ ((int)((velocity.x+ acceleration.x)*72))%100) )/(1+coeffOfColor),
+      110+ (140 + coeffOfColor*(plusB+ ((int)((velocity.y+acceleration.y)*72))%100) )/(1+coeffOfColor)
     );
     
     stroke(m_color);
@@ -166,12 +166,21 @@ class Boid {
     rotate(theta);
     fill(m_color);
         
+    
+    for(int i=0; i<TWO_PI; i+=TWO_PI/4.0){
+      circle(r*cos(i+theta), r*sin(i+theta), r);
+    }
+    fill(color(255,255,255));
+    circle(0,0, r);
+    
+    /* 
     beginShape(TRIANGLES);
     vertex(0, -r*2);
     vertex(-r, r*2);
     vertex(r, r*2);
   
     endShape();
+    */
     
     popMatrix();
   }
@@ -199,7 +208,7 @@ class Boid {
   // Separation
   // Method checks for nearby boids and steers away
   PVector separate (ArrayList<Boid> boids) {
-    float desiredseparation = 25.0f;
+    float desiredseparation = 50/*25.0f*/;
     PVector steer = new PVector(0, 0, 0);
     int count = 0;
     // For every boid in the system, check if it's too close
@@ -238,7 +247,7 @@ class Boid {
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   PVector align (ArrayList<Boid> boids) {
-    float neighbordist = 50;
+    float neighbordist = 100/*50*/;
     PVector sum = new PVector(0, 0);
     int count = 0;
     for (Boid other : boids) {
@@ -269,7 +278,7 @@ class Boid {
   // Cohesion
   // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
   PVector cohesion (ArrayList<Boid> boids) {
-    float neighbordist = 50;
+    float neighbordist = 100/*50*/;
     PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
     int count = 0;
     for (Boid other : boids) {

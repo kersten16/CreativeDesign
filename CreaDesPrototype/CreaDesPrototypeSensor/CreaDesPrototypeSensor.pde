@@ -30,11 +30,12 @@ void setup() {
   
   flock = new Flock();
   // Add an initial set of boids into the system
-  for (int i = 0; i < 500; i++) {
+  for (int i = 0; i < 300/*500*/; i++) {
     flock.addBoid(new Boid(width/2,height/2));
   }
   readyForMouse=true;
   millisecLastActivity = millis();
+  
   port.bufferUntil('\n');
 }
 
