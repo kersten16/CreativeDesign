@@ -171,7 +171,7 @@ class Boid {
       circle(r*cos(i+theta), r*sin(i+theta), r);
     }
     fill(color(255,255,255));
-    circle(0,0, r);
+    //circle(0,0, r);
     
     /* 
     beginShape(TRIANGLES);

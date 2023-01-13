@@ -16,14 +16,14 @@ boolean newGame=true;
 PImage img;
 
 void setup() {
-  size(1300, 1000);
+  size(1600, 800);
   //fill(255);
-  port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
-  //System.out.println(remoteKey);
-  //ellipse(100, height/2-100, 200, 200);
-  //ellipse(2*width/5+50, height+200, 200, 200);
-  //ellipse(2*width/5+50, height-200, 200, 200);
-  //ellipse(4*width/5, height/2-100, 200, 200);
+  //port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
+  port = new Serial(this, "COM10", 9600);
+  //rect(width/5-200, 2*height/3, 200, 300);
+  //rect(2*width/5-100, height/3-50, 200, 300);
+  //rect(3*width/5-100, height/3-50, 200, 300);
+  //rect(4*width/5, 2*height/3, 200, 300);
   ////noLoop();
   img = loadImage("img.jpeg");
  
@@ -41,7 +41,7 @@ void setup() {
 
 void draw() {
   if(newGame){
-      image(img, 250, 0, 800, 1000);
+      image(img, 500, 0, 600, 800);
     fill(255);
     triangle(850,height-125, 850, height-25,1000,height-75);
     fill(20,225,120);
@@ -52,24 +52,23 @@ void draw() {
     background(0);
     //System.out.println(remoteKey);
     fill(255,255,255);
-    ellipse(200, height/2, 200, 200);
-    ellipse(width/2, 200, 200, 200);
-    ellipse(width/2, height-200, 200, 200);
-    ellipse(width-200, height/2, 200, 200);
-    
+    rect(width/5-200, 2*height/3-50, 200, 300);
+    rect(2*width/5-125, height/3-100, 200, 300);
+    rect(3*width/5-75, height/3-100, 200, 300);
+    rect(4*width/5, 2*height/3-50, 200, 300);
     
     if(remoteKey.equals("left")){
           fill(0,0,255);
-      ellipse(200, height/2, 200, 200);
+          rect(width/5-200, 2*height/3-50, 200, 300);
     }else if(remoteKey.equals("up")){
           fill(0,0,255);
-      ellipse(width/2, 200, 200, 200);
+      rect(2*width/5-125, height/3-100, 200, 300);
     } else if(remoteKey.equals("down")){
           fill(0,0,255);
-      ellipse(width/2, height-200, 200, 200);
+      rect(3*width/5-75, height/3-100, 200, 300);
     }else if(remoteKey.equals("right")){
           fill(0,0,255);
-      ellipse(width-200, height/2, 200, 200);
+      rect(4*width/5, 2*height/3-50, 200, 300);
     }
     
     if(data.contains("left")){
@@ -79,7 +78,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(200, height/2, 200, 200);
+     rect(width/5-200, 2*height/3-50, 200, 300);
     }else if(data.contains("up")){
       if(!remoteKey.equals("up")){
         fill(0,255,0);   
@@ -87,7 +86,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(width/2, 200, 200, 200);
+      rect(2*width/5-125, height/3-100, 200, 300);
     } else if(data.contains("down")){
       if(!remoteKey.equals("down")){
         fill(0,255,0);   
@@ -95,7 +94,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-     ellipse(width/2, height-200, 200, 200);
+     rect(3*width/5-75, height/3-100, 200, 300);
     }else if(data.contains("right")){
       if(!remoteKey.equals("right")){
         fill(0,255,0);   
@@ -103,7 +102,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      ellipse(width-200, height/2, 200, 200);
+      rect(4*width/5, 2*height/3-50, 200, 300);
     }
     
     if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
