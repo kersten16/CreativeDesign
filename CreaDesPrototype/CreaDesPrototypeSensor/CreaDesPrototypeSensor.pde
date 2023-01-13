@@ -18,7 +18,7 @@ PImage img;
 void setup() {
   size(1300, 1000);
   //fill(255);
-  port = new Serial(this, "COM10", 9600);
+  port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
   //System.out.println(remoteKey);
   //ellipse(100, height/2-100, 200, 200);
   //ellipse(2*width/5+50, height+200, 200, 200);
