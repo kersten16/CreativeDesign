@@ -1,11 +1,19 @@
 import processing.serial.*;
+import processing.sound.*;
+
+SoundFile file1;
+SoundFile file2;
+SoundFile file3;
+SoundFile file4;
+SoundFile file5;
+SoundFile toPlay;
 
 Serial port;
 
 String remoteKey="null";
 String mouseKey="null";
 String data="" ;
-
+float rate=1;
 Flock flock;
 int millisecLastActivity;
 
@@ -17,16 +25,16 @@ PImage img;
 
 void setup() {
   size(1600, 800);
-  //fill(255);
+
   //port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
   port = new Serial(this, "COM10", 9600);
-  //rect(width/5-200, 2*height/3, 200, 300);
-  //rect(2*width/5-100, height/3-50, 200, 300);
-  //rect(3*width/5-100, height/3-50, 200, 300);
-  //rect(4*width/5, 2*height/3, 200, 300);
-  ////noLoop();
-  img = loadImage("img.jpeg");
- 
+
+  img = loadImage("hand.jpg");
+  file1 = new SoundFile(this,"LofiBeat.wav");
+  file2 = new SoundFile(this,"BassGroove.wav");
+  file3 = new SoundFile(this,"BeachyGuitar.wav");
+  file4 = new SoundFile(this,"SpacyElectronic.wav");
+  file5 = new SoundFile(this,"UpbeatBrass.wav");
   
   flock = new Flock();
   // Add an initial set of boids into the system
@@ -40,35 +48,56 @@ void setup() {
 }
 
 void draw() {
+  background(0);
   if(newGame){
-      image(img, 500, 0, 600, 800);
+    image(img, 500, 0, 600, 800);
+    fill(133,218,139);
+    circle(600,height-60,100);
+    fill(250,71,71);
+    circle(710, height-75,100);
+    fill(80,94,225);
+    circle(820, height-95, 100);
+    fill(192,133,218);
+    circle(950, height-60, 100);
+    fill(238,154,71);
+    circle(990, height-160, 100);
     fill(255);
-    triangle(850,height-125, 850, height-25,1000,height-75);
-    fill(20,225,120);
-    text("START", 862, height-63); 
-    textSize(32);
+    textSize(24);
+    textAlign(CENTER);
+    text("Lofi Beat",560,height-90, 85,80);
+    text("Groovy Bass",670, height-105,85,80);
+    text("Beach Guitar",780, height-125 ,85,80);
+    text("Spacey Electric",910, height-94, 85,80);
+    text("Upbeat Brass",950, height-190, 85,80);
+    textSize(48);
+    textAlign(LEFT);
+    text("Choose a Music Track", 100, 75); 
+
   }else{
+     if(!toPlay.isPlaying()){
+        newGame=true;
+        //toPlay=null;
+      }
     //fill(255);
-    background(0);
     //System.out.println(remoteKey);
     fill(255,255,255);
-    rect(width/5-200, 2*height/3-50, 200, 300);
-    rect(2*width/5-125, height/3-100, 200, 300);
-    rect(3*width/5-75, height/3-100, 200, 300);
-    rect(4*width/5, 2*height/3-50, 200, 300);
+    rect(width/5-200, 2*height/3-50, 150, 200);
+    rect(2*width/5-125, height/3-100, 150, 200);
+    rect(3*width/5-75, height/3-100, 150, 200);
+    rect(4*width/5, 2*height/3-50, 150, 200);
     
     if(remoteKey.equals("left")){
           fill(0,0,255);
-          rect(width/5-200, 2*height/3-50, 200, 300);
+          rect(width/5-200, 2*height/3-50, 150, 200);
     }else if(remoteKey.equals("up")){
           fill(0,0,255);
-      rect(2*width/5-125, height/3-100, 200, 300);
+      rect(2*width/5-125, height/3-100, 150, 200);
     } else if(remoteKey.equals("down")){
           fill(0,0,255);
-      rect(3*width/5-75, height/3-100, 200, 300);
+      rect(3*width/5-75, height/3-100, 150, 200);
     }else if(remoteKey.equals("right")){
           fill(0,0,255);
-      rect(4*width/5, 2*height/3-50, 200, 300);
+      rect(4*width/5, 2*height/3-50, 150, 200);
     }
     
     if(data.contains("left")){
@@ -78,7 +107,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-     rect(width/5-200, 2*height/3-50, 200, 300);
+     rect(width/5-200, 2*height/3-50, 150, 200);
     }else if(data.contains("up")){
       if(!remoteKey.equals("up")){
         fill(0,255,0);   
@@ -86,7 +115,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      rect(2*width/5-125, height/3-100, 200, 300);
+      rect(2*width/5-125, height/3-100, 150, 200);
     } else if(data.contains("down")){
       if(!remoteKey.equals("down")){
         fill(0,255,0);   
@@ -94,7 +123,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-     rect(3*width/5-75, height/3-100, 200, 300);
+     rect(3*width/5-75, height/3-100, 150, 200);
     }else if(data.contains("right")){
       if(!remoteKey.equals("right")){
         fill(0,255,0);   
@@ -102,7 +131,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      rect(4*width/5, 2*height/3-50, 200, 300);
+      rect(4*width/5, 2*height/3-50, 150, 200);
     }
     
     if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
@@ -121,35 +150,45 @@ void draw() {
     int millisecFromActivity = millis() - millisecLastActivity;
     
     flock.coeffActivity = -1 / (1 + exp((millisecOfActivityHalo - millisecFromActivity)/ (millisecOfActivityHalo*0.3)))+1;
-    
     flock.run();
+    if(flock.coeffActivity<0.02 && flock.coeffActivity>-0.02) {
+      rate=1;
+      toPlay.rate(rate);
+    }
   }
 }
 
 
 
-//void mousePressed(){
- 
-//    if(mouseX<290 && mouseX>110 && mouseY>260 && mouseY<340){
-//      mouseKey="left";
-//    }else if (mouseX<530 && mouseX>410 && mouseY>260 &&mouseY<340){
-//      mouseKey="right";
-//    }else if (mouseX<340 && mouseX>260 && mouseY>160 &&mouseY<240){
-//      mouseKey="up";
-//    }else if (mouseX<340 && mouseX>260 && mouseY>360 &&mouseY<440){
-//      mouseKey="down";
-//    }
-//    redraw();
-  
-//    isMouseActivityToBeConsiderYet = true;
-//}
+void mousePressed(){
+  //if (mouseButton == LEFT) {
+  //  fill(255);
+  //} else if (mouseButton == RIGHT) {
+  //  fill(166);
+  //} else {
+  //  fill(0);
+  //}
+  if(newGame){
+    if(mouseX>550 && mouseX<650 && mouseY>height-110 && mouseY<height-10){
+      toPlay=file1;
+    }else if (mouseX>660 && mouseX<760 && mouseY>height-125 &&mouseY<height-25){
+      toPlay=file2;
+    }else if (mouseX>770 && mouseX<870 && mouseY>height-145 &&mouseY<height-45){
+      toPlay=file3;
+    }else if (mouseX>900 && mouseX<1000 && mouseY>height-110 &&mouseY<height-10){
+      toPlay=file4;
+    }else if (mouseX>940 && mouseX<1040 && mouseY>height-210 &&mouseY<height-110){
+      toPlay=file5;
+    }
+    if(toPlay!=null){
+      newGame=false;
+      toPlay.play();
+      redraw();
+    }
+  }
+}
 
-//void mouseReleased(){
-//  mouseKey="null";
-//  redraw();
-  
-//  isMouseActivityToBeConsiderYet = false;
-//}
+
 
 void keyPressed(){
   
@@ -180,16 +219,7 @@ void keyReleased(){
   redraw();
 }
 
-void mousePressed() {
-  if (mouseButton == LEFT) {
-    fill(255);
-    newGame=false;
-  } else if (mouseButton == RIGHT) {
-    fill(166);
-  } else {
-    fill(0);
-  }
-}
+
 
 void increaseUniformity(){
     flock.setWrite(true);
@@ -200,6 +230,8 @@ void increaseUniformity(){
     }
     
     millisecLastActivity = millis();
+    rate=min(rate*1.05,2);
+    toPlay.rate(rate);
 }
 
 void decreaseUniformity(){
@@ -211,6 +243,8 @@ void decreaseUniformity(){
     
     
     millisecLastActivity = millis();
+    rate=max(rate*0.95,0.5);
+    toPlay.rate(rate);
 }
 }
 

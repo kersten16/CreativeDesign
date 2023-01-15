@@ -134,12 +134,12 @@ class Boid {
     
     float coeffOfColor = coeffActivity*(1 -coeffUniformity)/2;
     
-    if(write == true){
-      if(boidWrite == this){
-        print("Activ: "+coeffActivity+", Unif: "+coeffUniformity+", colorCoeff: "+coeffOfColor+"\n");
-      }
-    write = false;  
-  }
+  //  if(write == true){
+  //    if(boidWrite == this){
+  //      print("Activ: "+coeffActivity+", Unif: "+coeffUniformity+", colorCoeff: "+coeffOfColor+"\n");
+  //    }
+  //  write = false;  
+  //}
     
     float intensitySwitchParam = ((int)((velocity.x*velocity.y+acceleration.x*acceleration.y)*72)%100)/ 100;
     int plusR = -50;
@@ -167,7 +167,7 @@ class Boid {
     fill(m_color);
         
     
-    for(int i=0; i<TWO_PI; i+=TWO_PI/4.0){
+    for(int i=0; i<TWO_PI; i+=TWO_PI/2.0){
       circle(r*cos(i+theta), r*sin(i+theta), r);
     }
     fill(color(255,255,255));
