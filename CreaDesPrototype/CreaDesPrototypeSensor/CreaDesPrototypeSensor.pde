@@ -13,6 +13,7 @@ Serial port;
 String remoteKey="null";
 String mouseKey="null";
 String data="" ;
+String PrewData = "null";
 float rate=1;
 Flock flock;
 int millisecLastActivity;
@@ -26,8 +27,8 @@ PImage img;
 void setup() {
   size(1600, 800);
 
-  //port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
-  port = new Serial(this, "COM10", 9600);
+  port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
+  //port = new Serial(this, "COM10", 9600);
 
   img = loadImage("hand.jpg");
   file1 = new SoundFile(this,"LofiBeat.wav");
@@ -134,6 +135,13 @@ void draw() {
       rect(4*width/5, 2*height/3-50, 150, 200);
     }
     
+    if(PrewData != data){
+      
+     readyForMouse = true;
+     
+     PrewData = data; 
+    }
+    
     if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
      
       if(data.contains(remoteKey)){
@@ -143,7 +151,7 @@ void draw() {
         decreaseUniformity();
       }
       
-      //readyForMouse = false;
+      readyForMouse = false;
     }
     
     
@@ -216,6 +224,8 @@ void keyPressed(){
 }
 void keyReleased(){
   remoteKey="null";
+  
+  readyForMouse = true;
   redraw();
 }
 
@@ -249,7 +259,7 @@ void decreaseUniformity(){
 }
 
 void serialEvent(Serial myPort){
-
+  PrewData = data;
   data=myPort.readStringUntil('\n');
 
 }
