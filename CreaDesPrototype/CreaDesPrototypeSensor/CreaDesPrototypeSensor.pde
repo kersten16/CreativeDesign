@@ -24,8 +24,8 @@ boolean newGame=true;
 PImage img;
 
 void setup() {
-  size(1600, 800);
-
+  size(1600, 800,P2D);
+  // Display rectangle with CENTER mode
   //port = new Serial(this, "/dev/cu.usbmodem14201", 9600);
   port = new Serial(this, "COM10", 9600);
 
@@ -39,7 +39,7 @@ void setup() {
   flock = new Flock();
   // Add an initial set of boids into the system
   for (int i = 0; i < 300/*500*/; i++) {
-    flock.addBoid(new Boid(width/2,height/2));
+    flock.addBoid(new Boid(width/2-10,height/2));
   }
   readyForMouse=true;
   millisecLastActivity = millis();
@@ -74,6 +74,7 @@ void draw() {
     text("Choose a Music Track", 100, 75); 
 
   }else{
+     rectMode(CENTER);
      if(!toPlay.isPlaying()){
         newGame=true;
         //toPlay=null;
@@ -81,23 +82,24 @@ void draw() {
     //fill(255);
     //System.out.println(remoteKey);
     fill(255,255,255);
-    rect(width/5-200, 2*height/3-50, 150, 200);
-    rect(2*width/5-125, height/3-100, 150, 200);
-    rect(3*width/5-75, height/3-100, 150, 200);
-    rect(4*width/5, 2*height/3-50, 150, 200);
+
+    rect(width/5-100, 2*height/3-25, 150, 200);
+    rect(2*width/5-100, height/3-75, 150, 200);
+    rect(3*width/5+50, height/3-75, 150, 200);
+    rect(4*width/5+50, 2*height/3-25, 150, 200);
     
     if(remoteKey.equals("left")){
-          fill(0,0,255);
-          rect(width/5-200, 2*height/3-50, 150, 200);
+      fill(0,0,255);
+      rect(width/5-100, 2*height/3-25, 150, 200);
     }else if(remoteKey.equals("up")){
-          fill(0,0,255);
-      rect(2*width/5-125, height/3-100, 150, 200);
+      fill(0,0,255);
+      rect(2*width/5-100, height/3-75, 150, 200);
     } else if(remoteKey.equals("down")){
-          fill(0,0,255);
-      rect(3*width/5-75, height/3-100, 150, 200);
+      fill(0,0,255);
+      rect(3*width/5+50, height/3-75, 150, 200);
     }else if(remoteKey.equals("right")){
-          fill(0,0,255);
-      rect(4*width/5, 2*height/3-50, 150, 200);
+      fill(0,0,255);
+      rect(4*width/5+50, 2*height/3-25, 150, 200);
     }
     
     if(data.contains("left")){
@@ -107,7 +109,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-     rect(width/5-200, 2*height/3-50, 150, 200);
+     rect(width/5-100, 2*height/3-25, 150, 200);
     }else if(data.contains("up")){
       if(!remoteKey.equals("up")){
         fill(0,255,0);   
@@ -115,7 +117,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      rect(2*width/5-125, height/3-100, 150, 200);
+      rect(2*width/5-100, height/3-75, 150, 200);
     } else if(data.contains("down")){
       if(!remoteKey.equals("down")){
         fill(0,255,0);   
@@ -123,7 +125,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-     rect(3*width/5-75, height/3-100, 150, 200);
+     rect(3*width/5+50, height/3-75, 150, 200);
     }else if(data.contains("right")){
       if(!remoteKey.equals("right")){
         fill(0,255,0);   
@@ -131,7 +133,7 @@ void draw() {
       else{
         fill(255,0,0);   
       }
-      rect(4*width/5, 2*height/3-50, 150, 200);
+      rect(4*width/5+50, 2*height/3-25, 150, 200);
     }
     
     if(readyForMouse && !data.equals("null") && !remoteKey.equals("null")){
